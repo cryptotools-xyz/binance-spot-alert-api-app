@@ -47,7 +47,7 @@ class BTC_BUSDTPriceCheck extends Command
 
         $tickerPriceSymbol = new TickerPriceSymbol($data['symbol'], $data['price']);
 
-        Notification::route('slack', 'https://hooks.slack.com/services/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')
+        Notification::route('slack', 'https://hooks.slack.com/services/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')
             ->notify(new BTC_BUSDPriceReachedNotification($tickerPriceSymbol->getPrice()));
             
         return 0;
