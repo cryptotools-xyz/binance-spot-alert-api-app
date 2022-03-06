@@ -8,21 +8,21 @@ use Illuminate\Support\Facades\Notification;
 use App\Models\TickerPriceSymbol;
 use Http;
 
-class BTC_BUSDTPriceCheck extends Command
+class ETH_BUSDTPriceCheck extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'btc_busd:check';
+    protected $signature = 'eth_busd:check';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Check BTC_BUSD price and notify the slack channel';
+    protected $description = 'Check ETH_BUSD price and notify the slack channel';
 
     /**
      * Create a new command instance.
@@ -41,15 +41,15 @@ class BTC_BUSDTPriceCheck extends Command
      */
     public function handle()
     {
-        $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol=BTCBUSD');
+        $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol=ETHBUSD');
 
         $data = $response->json();
 
         $tickerPriceSymbol = new TickerPriceSymbol($data['symbol'], floatval($data['price']));
 
-        if($tickerPriceSymbol->getPrice() - $tickerPriceSymbol->getPriceRoundDownThousand() <= 100 || $tickerPriceSymbol->getPriceRoundUpThousand() - $tickerPriceSymbol->getPrice() <= 100) {
+        if($tickerPriceSymbol->getPrice() - $tickerPriceSymbol->getPriceRoundDownHundred() <= 10 || $tickerPriceSymbol->getPriceRoundUpHundred() - $tickerPriceSymbol->getPrice() <= 10) {
             Notification::route('slack', env('SLACK_WEBHOOK_BTC_BUSD'))
-                ->notify(new PriceReachedNotification('BTC_BUSD', $tickerPriceSymbol->getPrice()));
+                ->notify(new PriceReachedNotification('ETH_BUSD', $tickerPriceSymbol->getPrice()));
         }
 
         return 0;

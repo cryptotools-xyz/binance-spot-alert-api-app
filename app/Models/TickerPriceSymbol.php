@@ -19,11 +19,19 @@ class TickerPriceSymbol
     /**
      * source: https://stackoverflow.com/a/41365408
      */
-    public function getPriceRoundUp() {
+    public function getPriceRoundUpThousand() {
         return ceil($this->price / 1000) * 1000; 
     }
 
-    public function getPriceRoundDown() {
+    public function getPriceRoundDownThousand() {
         return floor($this->price / 1000) * 1000; 
+    }
+
+    public function getPriceRoundUpHundred() {
+        return ceil($this->price / 100) * 100; 
+    }
+
+    public function getPriceRoundDownHundred() {
+        return floor($this->price / 100) * 100; 
     }
 }
