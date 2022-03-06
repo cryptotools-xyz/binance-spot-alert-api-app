@@ -8,10 +8,11 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\SlackMessage;
 
-class BTC_BUSDPriceReachedNotification extends Notification
+class PriceReachedNotification extends Notification
 {
     use Queueable;
 
+    private $symbol;
     private $price;
 
     /**
@@ -19,8 +20,9 @@ class BTC_BUSDPriceReachedNotification extends Notification
      *
      * @return void
      */
-    public function __construct($price)
+    public function __construct($symbol, $price)
     {
+        $this->symbol = $symbol;
         $this->price = $price;
     }
 
@@ -44,6 +46,6 @@ class BTC_BUSDPriceReachedNotification extends Notification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-                    ->content("BTC_BUSD is now $this->price$");
+                    ->content("$this->symbol is now $this->price$");
     }
 }
