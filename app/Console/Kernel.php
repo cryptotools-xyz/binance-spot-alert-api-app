@@ -18,6 +18,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
 
         $schedule->command('btc_busd:check')->everyMinute();
+        $schedule->command('eth_busd:check')->everyMinute();
     }
 
     /**
