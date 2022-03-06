@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Notifications\BTC_BUSDPriceReached; 
+use App\Notifications\BTC_BUSDPriceReachedNotification; 
 use Illuminate\Support\Facades\Notification;
+use App\Models\TickerPriceSymbol;
+use Http;
 
 class BTC_BUSDTPriceCheck extends Command
 {
@@ -39,7 +41,14 @@ class BTC_BUSDTPriceCheck extends Command
      */
     public function handle()
     {
-        Notification::route('slack', 'https://hooks.slack.com/services/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')->notify(new BTC_BUSDPriceReached(30000));
+        $response = Http::get('https://api.binance.com/api/v3/ticker/price?symbol=BTCBUSD');
+
+        $data = $response->json();
+
+        $tickerPriceSymbol = new TickerPriceSymbol($data['symbol'], $data['price']);
+
+        Notification::route('slack', 'https://hooks.slack.com/services/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')
+            ->notify(new BTC_BUSDPriceReachedNotification($tickerPriceSymbol->getPrice()));
             
         return 0;
     }

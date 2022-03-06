@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\SlackMessage;
 
-class BTC_BUSDPriceReached extends Notification
+class BTC_BUSDPriceReachedNotification extends Notification
 {
     use Queueable;
 
