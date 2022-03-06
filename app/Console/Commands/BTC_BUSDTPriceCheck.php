@@ -45,11 +45,13 @@ class BTC_BUSDTPriceCheck extends Command
 
         $data = $response->json();
 
-        $tickerPriceSymbol = new TickerPriceSymbol($data['symbol'], $data['price']);
+        $tickerPriceSymbol = new TickerPriceSymbol($data['symbol'], floatval($data['price']));
 
-        Notification::route('slack', env('SLACK_WEBHOOK_BTC_BUSD'))
-            ->notify(new BTC_BUSDPriceReachedNotification($tickerPriceSymbol->getPrice()));
-            
+        if($tickerPriceSymbol->getPrice() - $tickerPriceSymbol->getPriceRoundDown() <= 100 || $tickerPriceSymbol->getPriceRoundUp() - $tickerPriceSymbol->getPrice() <= 100) {
+            Notification::route('slack', env('SLACK_WEBHOOK_BTC_BUSD'))
+                ->notify(new BTC_BUSDPriceReachedNotification($tickerPriceSymbol->getPrice()));
+        }
+
         return 0;
     }
 }
