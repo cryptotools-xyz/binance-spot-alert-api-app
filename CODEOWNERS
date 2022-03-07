@@ -1,1 +1,2 @@
 app/Console/Kernel.php @souhailmerroun
+app/Console/Commands/* @souhailmerroun
