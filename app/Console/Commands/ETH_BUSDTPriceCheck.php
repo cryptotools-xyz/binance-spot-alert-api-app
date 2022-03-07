@@ -48,7 +48,7 @@ class ETH_BUSDTPriceCheck extends Command
         $tickerPriceSymbol = new TickerPriceSymbol($data['symbol'], floatval($data['price']));
 
         if($tickerPriceSymbol->getPrice() - $tickerPriceSymbol->getPriceRoundDownHundred() <= 10 || $tickerPriceSymbol->getPriceRoundUpHundred() - $tickerPriceSymbol->getPrice() <= 10) {
-            Notification::route('slack', env('SLACK_WEBHOOK_BTC_BUSD'))
+            Notification::route('slack', env('SLACK_WEBHOOK_ETH_BUSD'))
                 ->notify(new PriceReachedNotification('ETH_BUSD', $tickerPriceSymbol->getPrice()));
         }
 
